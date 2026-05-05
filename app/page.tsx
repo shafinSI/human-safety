@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <main>
       <section className="hero">
+<<<<<<< HEAD
         <div className="heroContent">
           <p className="badge">🚨 Personal Safety Platform</p>
 
@@ -70,7 +71,33 @@ export default function Home() {
             <span>Check Route →</span>
           </Link>
         </div>
+=======
+        <h1>Human Safety Website</h1>
+        <p>Emergency help, safe travel, and trusted contact protection in one place.</p>
+
+        <div className="hero-buttons">
+          <Link href="/emergency-alert" className="hero-btn emergency-btn">
+            Get Help Now
+          </Link>
+
+          <a href="#features" className="hero-btn explore-btn">
+            Explore Features
+          </a>
+        </div>
       </section>
+
+      <section id="features" className="feature-grid">
+        <FeatureCard title="🚨 Emergency Alert" text="Send instant danger alert with location." link="/emergency-alert" />
+        <FeatureCard title="📍 Nearest People" text="Notify nearby trusted people quickly." link="/nearest-people" />
+        <FeatureCard title="🛣️ Safety Travel" text="Check your route before travelling." link="/safety-travel" />
+        <FeatureCard title="🛰️ Guardian Mode" text="Share your live travel status." link="/guardian-mode" />
+        <FeatureCard title="📞 Emergency Contact" text="Save and manage trusted contacts." link="/emergency-contact" />
+>>>>>>> f4e286af1eb6ba3cfe680b0b3aeee3819d190f53
+      </section>
+
+      <footer className="footer">
+        © 2026 Human Safety. Designed for emergency support and safer travel.
+      </footer>
     </main>
   );
 }
