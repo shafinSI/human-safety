@@ -1,6 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Human Safety App",
@@ -15,22 +15,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-
-        {/* Navbar */}
         <nav className="navbar">
-          <h2>Safety App</h2>
+          <Link href="/" className="logo">
+            <span className="logoIcon">🛡️</span>
+            <span className="logoText">Safety App</span>
+          </Link>
 
-          <div className="nav-links">
+          <div className="navLinks">
             <Link href="/">Home</Link>
-            <Link href="/emergency-alert" className="danger">Emergency</Link>
-            <Link href="/safety-travel">Travel</Link>
+            <Link href="/emergency-alert">Emergency</Link>
             <Link href="/emergency-contact">Contact</Link>
+            <Link href="/nearest-people">Nearest People</Link>
+            <Link href="/guardian-mode">Guardian Mode</Link>
+            <Link href="/safety-travel">Travel</Link>
           </div>
         </nav>
 
-        {/* Page Content */}
         {children}
-
       </body>
     </html>
   );

@@ -5,35 +5,28 @@ import { useState } from "react";
 export default function NearestPeople() {
   const [notified, setNotified] = useState(false);
 
-  function notifyPeople() {
-    setNotified(true);
-  }
-
   return (
-    <main style={{ padding: "40px", fontFamily: "Arial", textAlign: "center" }}>
-      <h1>Nearest People Notification</h1>
-      <p>Notify nearby trusted people in case of danger.</p>
+    <main className="nearestPage">
+      <section className="nearestBox">
+        <p className="nearestBadge">📍 Nearby Safety Alert</p>
 
-      <button
-        onClick={notifyPeople}
-        style={{
-          padding: "18px 35px",
-          border: "none",
-          borderRadius: "10px",
-          background: "#f59e0b",
-          color: "white",
-          fontSize: "18px",
-          cursor: "pointer",
-        }}
-      >
-        Notify Nearby People
-      </button>
+        <h1>Nearest People Notification</h1>
 
-      {notified && (
-        <p style={{ marginTop: "20px", color: "green" }}>
-          📍 Notification sent to nearby trusted people!
+        <p className="nearestDesc">
+          Notify nearby trusted people in case of danger.
         </p>
-      )}
+
+        <button
+          className={notified ? "nearestBtn notifiedBtn" : "nearestBtn notifyBtn"}
+          onClick={() => setNotified(!notified)}
+        >
+          {notified ? "Notification Sent" : "Notify Nearby People"}
+        </button>
+
+        <h2 className={notified ? "nearestStatusOn" : "nearestStatusOff"}>
+          {notified ? "Nearby People Notified ✅" : "Waiting for notification"}
+        </h2>
+      </section>
     </main>
   );
 }

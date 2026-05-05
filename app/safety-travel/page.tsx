@@ -5,45 +5,61 @@ import { useState } from "react";
 export default function SafetyTravel() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [result, setResult] = useState("");
+  const [checked, setChecked] = useState(false);
 
-  function checkSafety() {
-    if (from === "" || to === "") {
-      alert("Please enter starting point and destination");
+  const checkSafety = () => {
+    if (!from.trim() || !to.trim()) {
+      alert("Please enter From and To location");
       return;
     }
 
-    setResult(`Route from ${from} to ${to} is checking... Please stay alert and share your location with trusted contacts.`);
-  }
+    setChecked(true);
+  };
 
   return (
-    <main style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h1>Safety Travel</h1>
-      <p>Check your travel route before starting your journey.</p>
+    <main className="travelPage">
+      <section className="travelBox">
+        <p className="travelBadge">🛣️ Safe Route Checker</p>
 
-      <input
-        placeholder="From"
-        value={from}
-        onChange={(e) => setFrom(e.target.value)}
-      />
+        <h1>Safety Travel</h1>
 
-      <br /><br />
-
-      <input
-        placeholder="To"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
-      />
-
-      <br /><br />
-
-      <button onClick={checkSafety}>Check Safety</button>
-
-      {result && (
-        <p style={{ marginTop: "20px", color: "green" }}>
-          {result}
+        <p className="travelDesc">
+          Check your travel route before starting your journey.
         </p>
-      )}
+
+        <div className="travelForm">
+          <input
+            type="text"
+            placeholder="From location"
+            value={from}
+            onChange={(e) => {
+              setFrom(e.target.value);
+              setChecked(false);
+            }}
+          />
+
+          <input
+            type="text"
+            placeholder="To location"
+            value={to}
+            onChange={(e) => {
+              setTo(e.target.value);
+              setChecked(false);
+            }}
+          />
+
+          <button onClick={checkSafety}>Check Safety</button>
+        </div>
+
+        {checked && (
+          <div className="travelResult">
+            <h2>Route Safety Checked ✅</h2>
+            <p>
+              From <b>{from}</b> to <b>{to}</b> route is ready to review.
+            </p>
+          </div>
+        )}
+      </section>
     </main>
   );
 }

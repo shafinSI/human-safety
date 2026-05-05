@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "next": "latest",
+    "nodemailer": "^8.0.7",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "twilio": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "25.6.0",
