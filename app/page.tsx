@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <section className="hero">
-<<<<<<< HEAD
+
         <div className="heroContent">
           <p className="badge">🚨 Personal Safety Platform</p>
 
@@ -71,7 +71,7 @@ export default function Home() {
             <span>Check Route →</span>
           </Link>
         </div>
-=======
+
         <h1>Human Safety Website</h1>
         <p>Emergency help, safe travel, and trusted contact protection in one place.</p>
 
@@ -92,7 +92,7 @@ export default function Home() {
         <FeatureCard title="🛣️ Safety Travel" text="Check your route before travelling." link="/safety-travel" />
         <FeatureCard title="🛰️ Guardian Mode" text="Share your live travel status." link="/guardian-mode" />
         <FeatureCard title="📞 Emergency Contact" text="Save and manage trusted contacts." link="/emergency-contact" />
->>>>>>> f4e286af1eb6ba3cfe680b0b3aeee3819d190f53
+ f4e286af1eb6ba3cfe680b0b3aeee3819d190f53
       </section>
 
       <footer className="footer">
