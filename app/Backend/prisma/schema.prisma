@@ -17,9 +17,9 @@ model User {
   longitude Float?
   createdAt DateTime @default(now())
 
-  contacts       EmergencyContact[]
-  alertsSent     EmergencyAlert[]
-  guardianShares GuardianMode[]
+  contacts   EmergencyContact[]
+  alerts     EmergencyAlert[]
+  guardian   GuardianMode?
 }
 
 model EmergencyContact {
@@ -31,7 +31,7 @@ model EmergencyContact {
   relation  String?
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model EmergencyAlert {
@@ -43,17 +43,17 @@ model EmergencyAlert {
   status    String   @default("sent")
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model GuardianMode {
-  id         String   @id @default(cuid())
-  userId     String
-  isActive   Boolean  @default(false)
-  latitude   Float?
-  longitude  Float?
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  isActive    Boolean  @default(false)
+  latitude    Float?
+  longitude   Float?
   destination String?
-  updatedAt  DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
