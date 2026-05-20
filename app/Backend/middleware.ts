@@ -16,7 +16,10 @@ export function middleware(req: NextRequest) {
 
   const authHeader = req.headers.get('authorization')
   if (!authHeader?.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized - No token provided' }, { status: 401 })
+    return NextResponse.json(
+      { error: 'Unauthorized', message: 'Missing Authorization header' },
+      { status: 401 }
+    )
   }
 
   try {
@@ -24,7 +27,10 @@ export function middleware(req: NextRequest) {
     verifyToken(token)
     return NextResponse.next()
   } catch {
-    return NextResponse.json({ error: 'Unauthorized - Invalid or expired token' }, { status: 401 })
+    return NextResponse.json(
+      { error: 'Unauthorized', message: 'Token is invalid or expired' },
+      { status: 401 }
+    )
   }
 }
 
