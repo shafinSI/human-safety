@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getUserFromRequest } from '@/lib/auth'
 import { sendEmergencyEmail } from '@/lib/mailer'
+import { locationSchema } from '@/lib/validate'
 
-function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371
   const dLat = ((lat2 - lat1) * Math.PI) / 180
   const dLon = ((lon2 - lon1) * Math.PI) / 180
@@ -15,48 +16,81 @@ function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-// POST — Update user location
 export async function POST(req: NextRequest) {
-  const user = getUserFromRequest(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const user = getUserFromRequest(req)
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { latitude, longitude } = await req.json()
-  await prisma.user.update({
-    where: { id: user.userId },
-    data: { latitude, longitude },
-  })
-  return NextResponse.json({ success: true })
+    const body = await req.json()
+    const result = locationSchema.safeParse(body)
+    if (!result.success) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: result.error.flatten().fieldErrors },
+        { status: 400 }
+      )
+    }
+
+    const { latitude, longitude } = result.data
+
+    await prisma.user.update({
+      where: { id: user.userId },
+      data: { latitude, longitude },
+    })
+
+    return NextResponse.json({ success: true, message: 'Location updated' })
+  } catch (error) {
+    console.error('Update location error:', error)
+    return NextResponse.json({ error: 'Failed to update location' }, { status: 500 })
+  }
 }
 
-// GET — Find nearby users (within 5km) and alert them
 export async function GET(req: NextRequest) {
-  const user = getUserFromRequest(req)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const user = getUserFromRequest(req)
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const dbUser = await prisma.user.findUnique({ where: { id: user.userId } })
-  if (!dbUser?.latitude || !dbUser?.longitude)
-    return NextResponse.json({ error: 'Update your location first' }, { status: 400 })
+    const dbUser = await prisma.user.findUnique({ where: { id: user.userId } })
+    if (!dbUser) return NextResponse.json({ error: 'User not found' }, { status: 404 })
 
-  const allUsers = await prisma.user.findMany({
-    where: { id: { not: user.userId }, latitude: { not: null }, longitude: { not: null } },
-  })
+    if (dbUser.latitude === null || dbUser.longitude === null) {
+      return NextResponse.json(
+        { error: 'Please update your location first' },
+        { status: 400 }
+      )
+    }
 
-  const nearby = allUsers.filter((u) => {
-    const dist = getDistanceKm(dbUser.latitude!, dbUser.longitude!, u.latitude!, u.longitude!)
-    return dist <= 5
-  })
-
-  // Send alert emails to nearby users
-  const emailPromises = nearby.map((u) =>
-    sendEmergencyEmail({
-      to: u.email,
-      userName: dbUser.name,
-      message: '🚨 Someone near you needs help! Please check your surroundings.',
-      latitude: dbUser.latitude!,
-      longitude: dbUser.longitude!,
+    const allUsers = await prisma.user.findMany({
+      where: { id: { not: user.userId }, latitude: { not: null }, longitude: { not: null } },
+      select: { id: true, name: true, email: true, latitude: true, longitude: true },
     })
-  )
-  await Promise.allSettled(emailPromises)
 
-  return NextResponse.json({ nearbyCount: nearby.length, notified: nearby.length })
+    const nearby = allUsers.filter((u) =>
+      getDistanceKm(dbUser.latitude!, dbUser.longitude!, u.latitude!, u.longitude!) <= 5
+    )
+
+    if (nearby.length === 0) {
+      return NextResponse.json({ success: true, nearbyCount: 0, notified: 0 })
+    }
+
+    const emailResults = await Promise.allSettled(
+      nearby.map((u) =>
+        sendEmergencyEmail({
+          to: u.email,
+          userName: dbUser.name,
+          message: '🚨 Someone near you needs help! Please check your surroundings.',
+          latitude: dbUser.latitude,
+          longitude: dbUser.longitude,
+        })
+      )
+    )
+
+    const succeeded = emailResults.filter(
+      (r) => r.status === 'fulfilled' && r.value.success
+    ).length
+
+    return NextResponse.json({ success: true, nearbyCount: nearby.length, notified: succeeded })
+  } catch (error) {
+    console.error('Nearest people error:', error)
+    return NextResponse.json({ error: 'Failed to alert nearby people' }, { status: 500 })
+  }
 }
