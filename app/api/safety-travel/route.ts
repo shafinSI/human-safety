@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getUserFromRequest } from '@/lib/auth'
-import { travelSchema } from '@/lib/validate'
+import { travelSchema } from '../../../lib/validate'
 
 function getSafetyTips(hour: number): string[] {
   const isNight = hour >= 20 || hour < 6
+
   return isNight
     ? [
         'It is night time — stay on well-lit roads',
@@ -25,14 +25,16 @@ function getSafetyTips(hour: number): string[] {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = getUserFromRequest(req)
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const body = await req.json()
+
     const result = travelSchema.safeParse(body)
+
     if (!result.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: result.error.flatten().fieldErrors },
+        {
+          error: 'Validation failed',
+          details: result.error.flatten().fieldErrors,
+        },
         { status: 400 }
       )
     }
@@ -44,18 +46,25 @@ export async function POST(req: NextRequest) {
     const tips = getSafetyTips(currentHour)
 
     return NextResponse.json({
+      success: true,
       origin,
       destination,
       isNight,
       safetyLevel: isNight ? 'caution' : 'normal',
       tips,
-      googleMapsLink: `https://maps.google.com/maps?saddr=${encodeURIComponent(origin)}&daddr=${encodeURIComponent(destination)}`,
+      googleMapsLink: `https://maps.google.com/maps?saddr=${encodeURIComponent(
+        origin
+      )}&daddr=${encodeURIComponent(destination)}`,
       message: isNight
         ? '🌙 Night travel — extra caution advised. Share your location with contacts.'
         : '☀️ Safe travel hours. Stay alert and keep contacts informed.',
     })
   } catch (error) {
     console.error('Safety travel error:', error)
-    return NextResponse.json({ error: 'Failed to get travel safety info' }, { status: 500 })
+
+    return NextResponse.json(
+      { error: 'Failed to get travel safety info' },
+      { status: 500 }
+    )
   }
 }
