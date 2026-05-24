@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function EmergencyAlert() {
@@ -13,6 +14,7 @@ export default function EmergencyAlert() {
 
   function startAlert() {
     const saved = localStorage.getItem("emergencyContacts");
+
     if (!saved) {
       setStatus("❌ No contacts found. Add contacts first.");
       return;
@@ -22,7 +24,6 @@ export default function EmergencyAlert() {
     setIsTracking(true);
     setCountdown(5);
 
-    // countdown before sending
     timerRef.current = setInterval(() => {
       setCountdown((c) => {
         if (c <= 1) {
@@ -45,14 +46,15 @@ export default function EmergencyAlert() {
       return;
     }
 
-    // watchPosition = continuous tracking
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
+
         const link = `https://www.google.com/maps?q=${lat},${lng}`;
 
         setMapLink(link);
+
         setStatus(
           `🚨 Alert sent to: ${contacts.join(
             ", "
@@ -73,6 +75,7 @@ export default function EmergencyAlert() {
     if (watchIdRef.current !== null) {
       navigator.geolocation.clearWatch(watchIdRef.current);
     }
+
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
@@ -80,10 +83,10 @@ export default function EmergencyAlert() {
 
   useEffect(() => {
     return () => {
-      // cleanup on unmount
       if (watchIdRef.current !== null) {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }
+
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -91,56 +94,97 @@ export default function EmergencyAlert() {
   }, []);
 
   return (
-    <main style={{ padding: "40px", textAlign: "center" }}>
-      <h1 style={{ color: "red", fontSize: "36px" }}>🚨 Emergency Alert</h1>
+    <main className="alertPage">
 
-      <p>If you are in danger, press the button immediately.</p>
+      <header className="alertTop">
+        <Link href="/" className="alertBrand">
+          <img src="/logo.png" alt="logo" />
+          Human Safety
+        </Link>
 
-      {!isTracking ? (
-        <button
-          onClick={startAlert}
-          className="main-btn"
-          style={{ background: "red", marginTop: "20px" }}
-        >
-          SEND ALERT
-        </button>
-      ) : (
-        <button
-          onClick={stopAlert}
-          className="main-btn"
-          style={{ background: "#16a34a", marginTop: "20px" }}
-        >
-          STOP ALERT
-        </button>
-      )}
+        <p>🛡️ Your Safety, Our Priority</p>
+      </header>
 
-      {countdown > 0 && isTracking && (
-        <p style={{ marginTop: "15px" }}>
-          Sending in: <b>{countdown}s</b>
+      <section className="alertCard">
+
+        <div className="alertIcon">🔔</div>
+
+        <h1>Emergency Alert</h1>
+
+        <p className="alertText">
+          If you are in danger, press the button below.
+          Your alert will be sent immediately to your emergency contacts.
         </p>
-      )}
 
-      {status && (
-        <p style={{ marginTop: "20px", fontWeight: "bold" }}>{status}</p>
-      )}
+        {!isTracking ? (
+          <button onClick={startAlert} className="sendAlertBtn">
+            ⚠️ SEND ALERT
+          </button>
+        ) : (
+          <button onClick={stopAlert} className="stopAlertBtn">
+            🟢 STOP ALERT
+          </button>
+        )}
 
-      {mapLink && (
-        <a
-          href={mapLink}
-          target="_blank"
-          style={{
-            display: "inline-block",
-            marginTop: "15px",
-            padding: "12px 25px",
-            background: "#2563eb",
-            color: "white",
-            borderRadius: "8px",
-            textDecoration: "none",
-          }}
-        >
-          📍 View Live Location
-        </a>
-      )}
+        {countdown > 0 && isTracking && (
+          <p className="countdown">
+            Sending in: <b>{countdown}s</b>
+          </p>
+        )}
+
+        <p className="locationNote">
+          🛡️ Your location will be shared for faster help.
+        </p>
+
+        <div className="divider">
+          <span></span>
+          <b>How it works</b>
+          <span></span>
+        </div>
+
+        <div className="alertSteps">
+
+          <div>
+            <strong>📍 Share Location</strong>
+            <p>Your live location will be shared instantly.</p>
+          </div>
+
+          <div>
+            <strong>📞 Notify Contacts</strong>
+            <p>Your emergency contacts will be notified.</p>
+          </div>
+
+          <div>
+            <strong>⚡ Get Help Fast</strong>
+            <p>Quick response from nearby helpers.</p>
+          </div>
+
+        </div>
+
+        {status && (
+          <p className="alertStatus">{status}</p>
+        )}
+
+        {mapLink && (
+          <a
+            href={mapLink}
+            target="_blank"
+            className="mapBtn"
+          >
+            📍 View Live Location
+          </a>
+        )}
+
+        <p className="alertWarning">
+          ⓘ Use this only in genuine emergencies.
+        </p>
+
+      </section>
+
+      <p className="secureText">
+        🔒 Your data is secure and encrypted
+      </p>
+
     </main>
   );
 }
