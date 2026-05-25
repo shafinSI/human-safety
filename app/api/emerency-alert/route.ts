@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
-import { getUserFromRequest } from '../../../../lib/auth'
-import { sendEmergencyEmail } from '../../../../lib/mailer'
-import { emergencyAlertSchema } from '../../../../lib/validate'
+import { prisma } from '../../../lib/prisma'
+import { getUserFromRequest } from '../../../lib/auth'
+import { sendEmergencyEmail } from '../../../lib/mailer'
+import { emergencyAlertSchema } from '../../../lib/validate'
 export async function POST(req: NextRequest) {
   try {
     const user = getUserFromRequest(req)

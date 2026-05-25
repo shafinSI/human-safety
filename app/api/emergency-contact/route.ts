@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
-import { getUserFromRequest } from '../../../../lib/auth'
-import { sendEmergencyEmail } from '../../../../lib/mailer'
-import { guardianSchema } from '../../../../lib/validate'
+import { prisma } from '../../../lib/prisma'
+import { getUserFromRequest } from '../../../lib/auth'
+import { sendEmergencyEmail } from '../../../lib/mailer'
+import { guardianSchema } from '../../../lib/validate'
 export async function GET(req: NextRequest) {
   try {
     const user = getUserFromRequest(req)
