@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { getUserFromRequest } from '@/lib/auth'
-import { sendEmergencyEmail } from '@/lib/mailer'
-import { locationSchema } from '@/lib/validate'
+import { prisma } from '../../../../lib/prisma'
+import { getUserFromRequest } from '../../../../lib/auth'
+import { sendEmergencyEmail } from '../../../../lib/mailer'
+import { locationSchema } from '../../../../lib/validate'
 
 function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371
