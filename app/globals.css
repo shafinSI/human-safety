@@ -1260,3 +1260,266 @@ body {
     max-width: 300px;
   }
 }
+.contactPage {
+  min-height: 100vh;
+  color: white;
+  background:
+    radial-gradient(circle at left, rgba(0, 255, 170, 0.18), transparent 35%),
+    radial-gradient(circle at right, rgba(37, 99, 235, 0.18), transparent 35%),
+    linear-gradient(135deg, #020617, #06142f, #020617);
+  padding: 22px 7%;
+}
+
+.contactNavbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contactLogo {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.contactLogo img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.contactLogo span,
+.contactActive,
+.contactLeft span {
+  color: #00e69a;
+}
+
+.contactLinks {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.contactLinks a {
+  color: #dbeafe;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.contactActive {
+  padding: 12px 18px;
+  border-bottom: 2px solid #00e69a;
+}
+
+.contactUser {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.contactHero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.contactLeft h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.contactLeft p {
+  color: #cbd5e1;
+  font-size: 18px;
+}
+
+.contactCard,
+.contactRight,
+.savedList,
+.contactBottom {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+}
+
+.contactCard {
+  margin-top: 30px;
+  padding: 36px;
+}
+
+.inputBox {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.inputBox span {
+  width: 62px;
+  height: 62px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,230,154,0.08);
+  font-size: 26px;
+}
+
+.inputBox input {
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: white;
+  outline: none;
+  padding: 20px;
+  border-radius: 14px;
+  font-size: 17px;
+}
+
+.inputBox input::placeholder {
+  color: #94a3b8;
+}
+
+.saveBtn {
+  width: 100%;
+  border: none;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #14f1c7, #0066ff);
+  color: white;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.contactRight {
+  padding: 35px;
+}
+
+.contactImage {
+  width: 100%;
+  max-height: 290px;
+  object-fit: contain;
+}
+
+.contactFloating {
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.contactFloating h3 {
+  color: #00e69a;
+}
+
+.contactFloating p {
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.savedSection {
+  margin-top: 42px;
+}
+
+.savedSection h2 {
+  font-size: 24px;
+}
+
+.savedList {
+  overflow: hidden;
+}
+
+.savedCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 34px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.savedCard:last-child {
+  border-bottom: none;
+}
+
+.savedInfo {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.savedAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #14f1c7, #7c3aed);
+  font-weight: 900;
+}
+
+.savedInfo h3 {
+  margin: 0;
+}
+
+.savedInfo p {
+  color: #cbd5e1;
+}
+
+.savedBtns {
+  display: flex;
+  gap: 18px;
+}
+
+.editBtn,
+.deleteBtn {
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.editBtn {
+  background: rgba(0,230,154,0.14);
+}
+
+.deleteBtn {
+  background: rgba(239,68,68,0.18);
+}
+
+.emptyText {
+  padding: 25px;
+  color: #cbd5e1;
+}
+
+.contactBottom {
+  margin-top: 28px;
+  padding: 24px;
+  color: #cbd5e1;
+}
+
+@media (max-width: 900px) {
+  .contactLinks {
+    display: none;
+  }
+
+  .contactHero {
+    grid-template-columns: 1fr;
+  }
+
+  .savedCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+}

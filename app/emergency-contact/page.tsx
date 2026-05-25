@@ -1,72 +1,215 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+
+interface Contact {
+  name: string;
+  phone: string;
+}
 
 export default function EmergencyContact() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [contacts, setContacts] = useState<string[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const savedContacts = localStorage.getItem("emergencyContacts");
-    if (savedContacts) {
-      setContacts(JSON.parse(savedContacts));
+    const saved = localStorage.getItem("emergencyContacts");
+
+    if (saved) {
+      setContacts(JSON.parse(saved));
     }
   }, []);
 
-  function saveContact() {
-    if (name === "" || phone === "") {
-      alert("Please enter name and phone number");
-      return;
+  function saveToStorage(updated: Contact[]) {
+    setContacts(updated);
+    localStorage.setItem("emergencyContacts", JSON.stringify(updated));
+  }
+
+  function handleSave() {
+    if (!name || !phone) return;
+
+    let updated = [...contacts];
+
+    if (editIndex !== null) {
+      updated[editIndex] = { name, phone };
+      setEditIndex(null);
+    } else {
+      updated.push({ name, phone });
     }
 
-    const newContacts = [...contacts, `${name} - ${phone}`];
-    setContacts(newContacts);
-    localStorage.setItem("emergencyContacts", JSON.stringify(newContacts));
+    saveToStorage(updated);
 
     setName("");
     setPhone("");
   }
 
-  function deleteContact(index: number) {
-    const newContacts = contacts.filter((_, i) => i !== index);
-    setContacts(newContacts);
-    localStorage.setItem("emergencyContacts", JSON.stringify(newContacts));
+  function handleDelete(index: number) {
+    const updated = contacts.filter((_, i) => i !== index);
+    saveToStorage(updated);
+  }
+
+  function handleEdit(index: number) {
+    setName(contacts[index].name);
+    setPhone(contacts[index].phone);
+    setEditIndex(index);
   }
 
   return (
-    <main style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h1>Emergency Contact</h1>
-      <p>Add trusted emergency contacts.</p>
+    <main className="contactPage">
 
-      <input
-        placeholder="Enter name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <nav className="contactNavbar">
 
-      <br /><br />
+        <Link href="/" className="contactLogo">
+          <img src="/logo.png" alt="logo" />
+          Human <span>Safety</span>
+        </Link>
 
-      <input
-        placeholder="Enter phone number"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+        <div className="contactLinks">
+          <Link href="/">Dashboard</Link>
+          <Link href="/guardian-mode">Guardian Mode</Link>
 
-      <br /><br />
+          <Link
+            href="/emergency-contact"
+            className="contactActive"
+          >
+            Emergency Contact
+          </Link>
+        </div>
 
-      <button onClick={saveContact}>Save Contact</button>
+        <div className="contactUser">U</div>
 
-      <h2>Saved Contacts</h2>
+      </nav>
 
-      <ul>
-        {contacts.map((contact, index) => (
-          <li key={index}>
-            {contact}{" "}
-            <button onClick={() => deleteContact(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <section className="contactHero">
+
+        <div className="contactLeft">
+
+          <h1>
+            Emergency <span>Contact</span>
+          </h1>
+
+          <p>
+            Add trusted contacts who will be
+            notified in an emergency.
+          </p>
+
+          <div className="contactCard">
+
+            <div className="inputBox">
+              <span>👤</span>
+
+              <input
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div className="inputBox">
+              <span>📞</span>
+
+              <input
+                type="text"
+                placeholder="Enter phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+
+            <button
+              className="saveBtn"
+              onClick={handleSave}
+            >
+              ➕ {editIndex !== null ? "Update Contact" : "Save Contact"}
+            </button>
+
+          </div>
+
+        </div>
+
+        <div className="contactRight">
+
+          <img
+            src="/emergency_contact.png"
+            alt="contact"
+            className="contactImage"
+          />
+
+          <div className="contactFloating">
+            <h3>🛡️ Stay Protected, Stay Connected</h3>
+
+            <p>
+              Your trusted contacts will be alerted instantly
+              when you need help.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <section className="savedSection">
+
+        <h2>Saved Contacts</h2>
+
+        <div className="savedList">
+
+          {contacts.length === 0 && (
+            <p className="emptyText">
+              No contacts saved yet.
+            </p>
+          )}
+
+          {contacts.map((contact, index) => (
+
+            <div className="savedCard" key={index}>
+
+              <div className="savedInfo">
+
+                <div className="savedAvatar">
+                  {contact.name.charAt(0)}
+                </div>
+
+                <div>
+                  <h3>{contact.name}</h3>
+                  <p>{contact.phone}</p>
+                </div>
+
+              </div>
+
+              <div className="savedBtns">
+
+                <button
+                  className="editBtn"
+                  onClick={() => handleEdit(index)}
+                >
+                  ✏️
+                </button>
+
+                <button
+                  className="deleteBtn"
+                  onClick={() => handleDelete(index)}
+                >
+                  🗑️
+                </button>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </section>
+
+      <div className="contactBottom">
+        🔒 Your contacts are stored securely and never shared with anyone.
+      </div>
+
     </main>
   );
 }
