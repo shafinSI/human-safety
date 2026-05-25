@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
 import { getUserFromRequest } from '../../../lib/auth'
+import { emergencyContactSchema, contactIdSchema } from '../../../lib/validate'
+
 export async function GET(req: NextRequest) {
   try {
     const user = getUserFromRequest(req)
