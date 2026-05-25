@@ -41,7 +41,7 @@ export default function SafetyTravel() {
           </p>
 
           <img
-            src="/hero-safety.png"
+            src="/safety_travel.png"
             alt="travel"
             className="travelImage"
           />

@@ -1027,3 +1027,236 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.guardianPage {
+  min-height: 100vh;
+  color: white;
+  background:
+    radial-gradient(circle at left, rgba(0, 255, 170, 0.18), transparent 35%),
+    radial-gradient(circle at right, rgba(37, 99, 235, 0.18), transparent 35%),
+    linear-gradient(135deg, #020617, #06142f, #020617);
+  padding: 22px 7%;
+}
+
+.guardianNavbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guardianLogo {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.guardianLogo img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.guardianLogo span {
+  color: #00e69a;
+}
+
+.guardianLinks {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.guardianLinks a {
+  color: #dbeafe;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.guardianActive {
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(0, 230, 154, 0.12);
+  border: 1px solid rgba(0, 230, 154, 0.35);
+  color: white !important;
+}
+
+.guardianUser {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.guardianHero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 45px;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.guardianBadge {
+  width: fit-content;
+  padding: 12px 22px;
+  border-radius: 999px;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  font-weight: 700;
+}
+
+.guardianLeft h1 {
+  font-size: 56px;
+  line-height: 1.08;
+  margin: 28px 0;
+}
+
+.guardianLeft h1 span {
+  color: #22c55e;
+}
+
+.guardianLeft p {
+  color: #cbd5e1;
+  font-size: 22px;
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.guardianBtn {
+  margin-top: 25px;
+  border: none;
+  padding: 22px 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00e69a, #16a34a);
+  color: white;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.guardianToggle {
+  margin-top: 26px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+}
+
+.toggleSwitch {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.25);
+}
+
+.toggleSwitch.on {
+  background: #22c55e;
+  box-shadow: 0 0 20px rgba(34,197,94,0.6);
+}
+
+.guardianRight {
+  position: relative;
+}
+
+.guardianImage {
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.guardianFloating {
+  max-width: 330px;
+  margin: -35px 0 0 auto;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px);
+}
+
+.guardianFloating h3 {
+  color: #00e69a;
+}
+
+.guardianFloating p {
+  color: #dbeafe;
+  line-height: 1.5;
+}
+
+.guardianDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 55px 0 25px;
+}
+
+.guardianDivider span {
+  width: 60px;
+  height: 2px;
+  background: #00e69a;
+}
+
+.guardianSteps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.guardianStepCard {
+  padding: 35px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.guardianStepCard h3 {
+  font-size: 22px;
+}
+
+.guardianStepCard p {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.guardianBottom {
+  margin-top: 35px;
+  padding: 24px;
+  border-radius: 18px;
+  text-align: center;
+  color: #dbeafe;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 900px) {
+  .guardianLinks {
+    display: none;
+  }
+
+  .guardianHero {
+    grid-template-columns: 1fr;
+    margin-top: 40px;
+  }
+
+  .guardianLeft h1 {
+    font-size: 40px;
+  }
+
+  .guardianSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .guardianFloating {
+    margin: -25px 0 0 auto;
+    max-width: 300px;
+  }
+}
