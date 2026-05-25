@@ -99,7 +99,7 @@ export default function EmergencyAlert() {
       <header className="alertTop">
         <Link href="/" className="alertBrand">
           <img src="/logo.png" alt="logo" />
-          Human Safety
+          Human Safety Home
         </Link>
 
         <p>🛡️ Your Safety, Our Priority</p>

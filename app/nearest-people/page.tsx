@@ -32,8 +32,8 @@ export default function NearestPeoplePage() {
 
       <section className="nearHero">
         <div className="mainIcon">
-          <Users size={58} />
-          <MapPin className="pinIcon" size={34} />
+          <Users size={52} />
+          <MapPin className="pinIcon" size={22} />
         </div>
 
         <h1>
