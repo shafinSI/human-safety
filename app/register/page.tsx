@@ -1,82 +1,91 @@
-'use client'
-
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from "next/link";
+import { User, Mail, Phone, Lock, Eye } from "lucide-react";
 
 export default function RegisterPage() {
-  const router = useRouter()
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
-    })
-
-    const data = await res.json()
-
-    if (res.ok) {
-      localStorage.setItem('token', data.token)
-      setMessage('Registration successful!')
-      router.push('/')
-    } else {
-      setMessage(data.error || 'Registration failed')
-    }
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleRegister}
-        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold mb-6 text-center">Register</h1>
+    <main className="registerPage">
+      <Link href="/" className="authHomeBrand">
+        <img src="/logo.png" alt="Human Safety" className="authHomeLogo" />
+        <span className="authHomeText">
+          <span>Human</span> <b>Safety</b> <b>Home</b>
+        </span>
+      </Link>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full p-3 border rounded mb-4"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+      <section className="registerHero">
+        <div className="registerLeft">
+          <h1>
+            Create Your <span>Account</span>
+          </h1>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-3 border rounded mb-4"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <p>
+            Join Human Safety and stay connected with your trusted contacts.
+            Your safety is our priority.
+          </p>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-3 border rounded mb-4"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <div className="registerShield">🛡️</div>
+        </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700"
-        >
-          Register
-        </button>
+        <div className="registerCard">
+          <div className="registerIcon">
+            <User size={42} />
+          </div>
 
-        {message && (
-          <p className="mt-4 text-center text-red-500">{message}</p>
-        )}
-      </form>
-    </div>
-  )
+          <h2>Register</h2>
+          <p className="registerSubtitle">
+            Fill in the details to create your account
+          </p>
+
+          <form>
+            <label>Full Name</label>
+            <div className="registerInput">
+              <User size={20} />
+              <input type="text" placeholder="Enter your full name" />
+            </div>
+
+            <label>Email</label>
+            <div className="registerInput">
+              <Mail size={20} />
+              <input type="email" placeholder="Enter your email" />
+            </div>
+
+            <label>Phone Number</label>
+            <div className="registerInput">
+              <Phone size={20} />
+              <input type="text" placeholder="Enter your phone number" />
+            </div>
+
+            <label>Password</label>
+            <div className="registerInput">
+              <Lock size={20} />
+              <input type="password" placeholder="Create a password" />
+              <Eye size={20} />
+            </div>
+
+            <label>Confirm Password</label>
+            <div className="registerInput">
+              <Lock size={20} />
+              <input type="password" placeholder="Confirm your password" />
+              <Eye size={20} />
+            </div>
+
+            <div className="registerCheck">
+              <input type="checkbox" />
+              <span>I agree to the Terms of Service and Privacy Policy</span>
+            </div>
+
+            <button type="submit" className="registerBtn">
+              Register →
+            </button>
+          </form>
+
+          <p className="registerLogin">
+            Already have an account? <Link href="/login">Login</Link>
+          </p>
+        </div>
+      </section>
+    </main>
+  );
 }
+
+
+
