@@ -13,7 +13,12 @@ export default function Home() {
     <main className="home">
       <nav className="navbar">
         <Link href="/" className="brand">
-          <span className="brandIcon">🛡️</span> Human Safety
+          <img
+            src="/logo.png"
+            alt="Human Safety Logo"
+            className="brandLogo"
+          />
+          <span>Human Safety</span>
         </Link>
 
         <div className="navlinks">
@@ -25,24 +30,39 @@ export default function Home() {
           <Link href="/emergency-contact">Emergency Contact</Link>
         </div>
 
-        <Link href="/emergency-alert" className="helpBtn">☎ Get Help Now</Link>
+        <div className="authBtns">
+          <Link href="/register" className="helpBtn">
+            Register
+          </Link>
+
+          <Link href="/login" className="helpBtn loginTopBtn">
+            Login
+          </Link>
+        </div>
       </nav>
 
       <section className="hero">
         <div className="heroText">
           <p className="miniTag">STAY SAFE WITH HUMAN SAFETY</p>
+
           <h1>
             Your Safety,<br />
             <span>Our Priority</span>
           </h1>
+
           <p className="heroDesc">
             Emergency help, safe travel, live location sharing, and trusted
             contact support in one smart safety platform.
           </p>
 
           <div className="heroBtns">
-            <Link href="/emergency-alert" className="primary">Get Help Now 🚨</Link>
-            <Link href="/safety-travel" className="secondary">Explore Features →</Link>
+            <Link href="/register" className="primary">
+              Get Help Now 🚨
+            </Link>
+
+            <Link href="#features" className="secondary">
+              Explore Features →
+            </Link>
           </div>
         </div>
 
@@ -52,16 +72,33 @@ export default function Home() {
       </section>
 
       <section className="stats">
-        <div><b>10K+</b><span>Active Users</span></div>
-        <div><b>24/7</b><span>Emergency Support</span></div>
-        <div><b>100+</b><span>Cities Covered</span></div>
-        <div><b>99%</b><span>Safety Commitment</span></div>
+        <div>
+          <b>10K+</b>
+          <span>Active Users</span>
+        </div>
+
+        <div>
+          <b>24/7</b>
+          <span>Emergency Support</span>
+        </div>
+
+        <div>
+          <b>100+</b>
+          <span>Cities Covered</span>
+        </div>
+
+        <div>
+          <b>99%</b>
+          <span>Safety Commitment</span>
+        </div>
       </section>
 
-      <section className="features">
+      <section id="features" className="features">
         <p className="tag">OUR FEATURES</p>
         <h2>Smart Features for Your Safety</h2>
-        <p className="sub">Everything you need to stay safe, connected and protected.</p>
+        <p className="sub">
+          Everything you need to stay safe, connected and protected.
+        </p>
 
         <div className="cards">
           {features.map(([icon, title, desc, link]) => (
@@ -80,7 +117,6 @@ export default function Home() {
           <h2>Together, we build a safer world</h2>
           <p>Be aware. Be prepared. Be safe.</p>
         </div>
-        
       </section>
     </main>
   );
