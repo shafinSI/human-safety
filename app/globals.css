@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -36,6 +39,22 @@ body {
   text-decoration: none;
   font-size: 22px;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandLogo {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  object-fit: contain !important;
+  border-radius: 50%;
+  background: rgb(20, 20, 20);
+  padding: 2px;
 }
 
 .navlinks {
@@ -1523,3 +1542,414 @@ body {
     gap: 18px;
   }
 }
+.registerPage {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #063a55, #030817 55%, #070018);
+  color: white;
+  padding: 60px 70px;
+}
+
+.registerHero {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.registerLeft h1 {
+  font-size: 58px;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.registerLeft h1 span {
+  color: #00e5ff;
+}
+
+.registerLeft p {
+  max-width: 430px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.registerShield {
+  margin-top: 55px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 60px rgba(0, 229, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+}
+
+.registerCard {
+  max-width: 620px;
+  width: 100%;
+  background: rgba(7, 18, 38, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  padding: 42px 50px;
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.35);
+}
+
+.registerIcon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  border: 1px solid #00f5d4;
+  color: #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.registerCard h2 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.registerSubtitle {
+  text-align: center;
+  color: #b8c1d1;
+  margin-bottom: 28px;
+}
+
+.registerCard label {
+  display: block;
+  margin: 16px 0 8px;
+  font-size: 16px;
+}
+
+.registerInput {
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  color: #cbd5e1;
+}
+
+.registerInput input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.registerInput input::placeholder {
+  color: #94a3b8;
+}
+
+.registerCheck {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.registerBtn {
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #10f3d0, #1684ff);
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
+}
+
+.registerLogin {
+  text-align: center;
+  margin-top: 24px;
+  color: #cbd5e1;
+}
+
+.registerLogin a {
+  color: #00f5d4;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .registerPage {
+    padding: 30px 20px;
+  }
+
+  .registerHero {
+    grid-template-columns: 1fr;
+  }
+
+  .registerLeft h1 {
+    font-size: 42px;
+  }
+
+  .registerCard {
+    padding: 32px 24px;
+  }
+
+  .registerShield {
+    width: 190px;
+    height: 190px;
+    font-size: 85px;
+  }
+   .homeBBtn {
+  position: fixed;
+  top: 25px;
+  left: 30px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #6ee7c9;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 14px 24px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(248, 244, 246, 0.897);
+}
+.homeBBtn:hover {
+   background: #6ee7c9;
+}
+  }
+.loginPage {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #063a55, #030817 55%, #070018);
+  color: white;
+  padding: 60px 70px;
+}
+
+.authHomeBrand {
+  position: fixed;
+  top: 25px;
+  left: 35px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.authHomeLogo {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  object-fit: contain !important;
+  border-radius: 50%;
+  background: white;
+  padding: 3px;
+}
+
+.authHomeText {
+  font-size: 26px;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+
+.authHomeText b {
+  color: #22f5d3;
+}
+
+.loginHero {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.loginLeft h1 {
+  font-size: 58px;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.loginLeft h1 span {
+  color: #00e5ff;
+}
+
+.loginLeft p {
+  max-width: 430px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.loginShield {
+  margin-top: 55px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 60px rgba(0, 229, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00e5ff;
+}
+
+.loginCard {
+  max-width: 560px;
+  width: 100%;
+  background: rgba(7, 18, 38, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  padding: 45px 50px;
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.35);
+}
+
+.loginIcon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  border: 1px solid #00f5d4;
+  color: #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginCard h2 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.loginSubtitle {
+  text-align: center;
+  color: #b8c1d1;
+  margin-bottom: 28px;
+}
+
+.loginCard label {
+  display: block;
+  margin: 16px 0 8px;
+  font-size: 16px;
+}
+
+.loginInput {
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  color: #cbd5e1;
+}
+
+.loginInput input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.loginInput input::placeholder {
+  color: #94a3b8;
+}
+
+.loginOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.loginOptions label {
+  margin: 0;
+}
+
+.loginOptions a,
+.loginRegister a {
+  color: #00f5d4;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginBtn {
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #10f3d0, #1684ff);
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
+}
+
+.loginRegister {
+  text-align: center;
+  margin-top: 24px;
+  color: #cbd5e1;
+}
+
+@media (max-width: 900px) {
+  .loginPage {
+    padding: 90px 20px 30px;
+  }
+
+  .authHomeBrand {
+    top: 20px;
+    left: 20px;
+  }
+
+  .authHomeLogo {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+  }
+
+  .authHomeText {
+    font-size: 22px;
+  }
+
+  .loginHero {
+    grid-template-columns: 1fr;
+  }
+
+  .loginLeft h1 {
+    font-size: 42px;
+  }
+
+  .loginCard {
+    padding: 32px 24px;
+  }
+
+  .loginShield {
+    width: 190px;
+    height: 190px;
+  }
+}
+
