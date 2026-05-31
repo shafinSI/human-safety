@@ -7,7 +7,7 @@ export default function RegisterPage() {
       <Link href="/" className="authHomeBrand">
         <img src="/logo.png" alt="Human Safety" className="authHomeLogo" />
         <span className="authHomeText">
-          <span>Human</span> <b>Safety</b> <b>Home</b>
+           <b>Home</b>
         </span>
       </Link>
 

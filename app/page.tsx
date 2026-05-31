@@ -1,88 +1,96 @@
 import Link from "next/link";
+import Sidebar from "./components/sidebar";
 
-function FeatureCard({
-  title,
-  text,
-  link,
-}: {
-  title: string;
-  text: string;
-  link: string;
-}) {
-  return (
-    <Link href={link} className="card">
-      <div className="icon">{title.split(" ")[0]}</div>
-      <h3>{title.replace(title.split(" ")[0], "").trim()}</h3>
-      <p>{text}</p>
-      <span>Open →</span>
-    </Link>
-  );
-}
+const features = [
+  ["🚨", "Emergency Alert", "Send SOS alert with your live location instantly.", "/emergency-alert"],
+  ["📍", "Nearest People", "Notify and connect with people near you.", "/nearest-people"],
+  ["🛣️", "Safety Travel", "Get safe route suggestions while travelling.", "/safety-travel"],
+  ["🛡️", "Guardian Mode", "Share your journey and get real-time updates.", "/guardian-mode"],
+  ["☎️", "Emergency Contact", "Save and call trusted contacts quickly.", "/emergency-contact"],
+];
 
 export default function Home() {
   return (
-    <main>
+    <main className="home">
+      <Sidebar />
+
+      <nav className="navbar">
+        <Link href="/" className="brand">
+          <img
+            src="/logo.png"
+            alt="Human Safety Logo"
+            className="brandLogo"
+          />
+          <span>Human Safety</span>
+        </Link>
+
+       
+        <div className="authBtns">
+          <Link href="/register" className="helpBtn">Register</Link>
+          <Link href="/login" className="helpBtn loginTopBtn">Login</Link>
+        </div>
+      </nav>
+
       <section className="hero">
-        <div className="heroContent">
-          <p className="badge">🚨 Personal Safety Platform</p>
+        <div className="heroText">
+          <p className="miniTag">STAY SAFE WITH HUMAN SAFETY</p>
 
           <h1>
-            Human <span>Safety</span> Website
+            Your Safety,<br />
+            <span>Our Priority</span>
           </h1>
 
-          <p className="subtitle">
-            Emergency help, trusted contacts, safe travel, nearest people alert,
-            and guardian protection in one place.
+          <p className="heroDesc">
+            Emergency help, safe travel, live location sharing, and trusted
+            contact support in one smart safety platform.
           </p>
 
-          <div className="heroButtons">
-            <Link href="/emergency-alert" className="btn redBtn">
-              Get Help Now
+          <div className="heroBtns">
+            <Link href="/register" className="primary">
+              Get Help Now 🚨
             </Link>
 
-            <Link href="/safety-travel" className="btn blueBtn">
-              Safe Travel
+            <Link href="#features" className="secondary">
+              Explore Features →
             </Link>
           </div>
         </div>
+
+        <div className="heroImageBox">
+          <img src="/hero-safety.png" alt="Human Safety" className="heroImg" />
+        </div>
       </section>
 
-      <section className="features">
-        <div className="sectionTitle">
-          <p>Our Features</p>
-          <h2>Smart protection for emergency situations</h2>
+      <section className="stats">
+        <div><b>10K+</b><span>Active Users</span></div>
+        <div><b>24/7</b><span>Emergency Support</span></div>
+        <div><b>100+</b><span>Cities Covered</span></div>
+        <div><b>99%</b><span>Safety Commitment</span></div>
+      </section>
+
+      <section id="features" className="features">
+        <p className="tag">OUR FEATURES</p>
+        <h2>Smart Features for Your Safety</h2>
+        <p className="sub">
+          Everything you need to stay safe, connected and protected.
+        </p>
+
+        <div className="cards">
+          {features.map(([icon, title, desc, link]) => (
+            <Link href={link} className="card" key={title}>
+              <div className="icon">{icon}</div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+              <span>Learn More →</span>
+            </Link>
+          ))}
         </div>
+      </section>
 
-        <div className="cardContainer fiveCards">
-          <FeatureCard
-            title="🚨 Emergency Alert"
-            text="Send instant danger alert with your location."
-            link="/emergency-alert"
-          />
-
-          <FeatureCard
-            title="📞 Emergency Contact"
-            text="Save and manage trusted emergency contacts."
-            link="/emergency-contact"
-          />
-
-          <FeatureCard
-            title="📍 Nearest People"
-            text="Notify nearby trusted people quickly."
-            link="/nearest-people"
-          />
-
-          <FeatureCard
-            title="🛰️ Guardian Mode"
-            text="Share your live travel status with trusted contacts."
-            link="/guardian-mode"
-          />
-
-          <FeatureCard
-            title="🛣️ Safety Travel"
-            text="Check your route before travelling."
-            link="/safety-travel"
-          />
+      <section className="bottomCta">
+        <div>
+          <h2>Together, we build a safer world</h2>
+          <p>Be aware. Be prepared. Be safe.</p>
         </div>
       </section>
     </main>

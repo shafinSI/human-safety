@@ -1,65 +1,138 @@
 "use client";
-
-import { useState } from "react";
+import Sidebar from "../components/sidebar";
+import Link from "next/link";
 
 export default function SafetyTravel() {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [checked, setChecked] = useState(false);
-
-  const checkSafety = () => {
-    if (!from.trim() || !to.trim()) {
-      alert("Please enter From and To location");
-      return;
-    }
-
-    setChecked(true);
-  };
-
   return (
     <main className="travelPage">
-      <section className="travelBox">
-        <p className="travelBadge">🛣️ Safe Route Checker</p>
+        <Sidebar />
 
-        <h1>Safety Travel</h1>
+      <nav className="travelNavbar">
 
-        <p className="travelDesc">
-          Check your travel route before starting your journey.
-        </p>
+        <Link href="/" className="travelLogo">
+          <img src="/logo.png" alt="logo" />
+          Human <span>Safety</span>
+        </Link>
 
-        <div className="travelForm">
-          <input
-            type="text"
-            placeholder="From location"
-            value={from}
-            onChange={(e) => {
-              setFrom(e.target.value);
-              setChecked(false);
-            }}
-          />
-
-          <input
-            type="text"
-            placeholder="To location"
-            value={to}
-            onChange={(e) => {
-              setTo(e.target.value);
-              setChecked(false);
-            }}
-          />
-
-          <button onClick={checkSafety}>Check Safety</button>
+        <div className="travelLinks">
+           <Link href="/safety-travel#travel-guides">Guides</Link>
         </div>
 
-        {checked && (
-          <div className="travelResult">
-            <h2>Route Safety Checked ✅</h2>
-            <p>
-              From <b>{from}</b> to <b>{to}</b> route is ready to review.
+        <div className="travelUser">U</div>
+
+      </nav>
+
+      <section className="travelHero">
+
+        <div className="travelLeft">
+
+          <h1>
+            Plan Safe.
+            <br />
+            Travel Confident.
+          </h1>
+
+          <div className="travelLine"></div>
+
+          <p>
+            Get a quick safety overview of your
+            travel route and stay one step ahead.
+          </p>
+
+          <img
+            src="/safety_travel.png"
+            alt="travel"
+            className="travelImage"
+          />
+
+        </div>
+
+        <div className="travelRight">
+
+          <div className="travelCard">
+
+            <h2>Check Your Route Safety</h2>
+
+            <div className="travelInput">
+
+              <div>
+                <label>Starting Point</label>
+
+                <input
+                  type="text"
+                  placeholder="Enter starting location"
+                />
+              </div>
+
+            </div>
+
+            <div className="travelInput">
+
+              <div>
+                <label>Destination</label>
+
+                <input
+                  type="text"
+                  placeholder="Enter destination location"
+                />
+              </div>
+
+            </div>
+
+            <button className="travelBtn">
+              🛡️ Analyze Route
+            </button>
+
+            <p className="travelSmall">
+              🔒 We use trusted data sources to analyze route safety.
             </p>
+
           </div>
-        )}
+
+        </div>
+
       </section>
+
+      <section
+        className="travelFeatures"
+        id="travel-guides"
+      >
+
+        <div>
+          <h3>🛡️ Risk Assessment</h3>
+          <p>
+            See potential risks along your travel path.
+          </p>
+        </div>
+
+        <div>
+          <h3>👥 Crowd & Area Info</h3>
+          <p>
+            Check crowd density and neighborhood safety.
+          </p>
+        </div>
+
+        <div>
+          <h3>⚠️ Incident Alerts</h3>
+          <p>
+            Get real-time updates on incidents and hazards.
+          </p>
+        </div>
+
+        <div>
+          <h3>💙 Travel Tips</h3>
+          <p>
+            Receive smart tips for a safer journey.
+          </p>
+        </div>
+
+      </section>
+
+      <div className="travelBottom">
+        ⓘ Your safety is our priority.
+        Always stay alert and travel smart.
+      </div>
+
     </main>
   );
 }
