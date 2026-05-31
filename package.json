@@ -8,10 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "chromedriver": "^148.0.4",
     "lucide-react": "^1.14.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "selenium-webdriver": "^4.44.0"
   },
   "devDependencies": {
     "@types/node": "25.6.0",

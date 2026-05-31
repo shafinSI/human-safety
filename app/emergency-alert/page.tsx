@@ -1,5 +1,6 @@
 "use client";
 
+import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -96,10 +97,11 @@ export default function EmergencyAlert() {
   return (
     <main className="alertPage">
 
+               <Sidebar />
       <header className="alertTop">
         <Link href="/" className="alertBrand">
           <img src="/logo.png" alt="logo" />
-          Human Safety Home
+          Human Safety 
         </Link>
 
         <p>🛡️ Your Safety, Our Priority</p>

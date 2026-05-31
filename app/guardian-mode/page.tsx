@@ -1,5 +1,5 @@
 "use client";
-
+import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -8,6 +8,7 @@ export default function GuardianMode() {
 
   return (
     <main className="guardianPage">
+        <Sidebar />
       <nav className="guardianNavbar">
         <Link href="/" className="guardianLogo">
           <img src="/logo.png" alt="logo" />
@@ -15,8 +16,6 @@ export default function GuardianMode() {
         </Link>
 
         <div className="guardianLinks">
-          <Link href="/">Dashboard</Link>
-          <Link href="/emergency-alert">Alerts</Link>
           <Link href="/guardian-mode" className="guardianActive">
             Guardian Mode
           </Link>

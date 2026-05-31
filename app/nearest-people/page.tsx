@@ -1,3 +1,4 @@
+import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import {
   Bell,
@@ -13,22 +14,8 @@ import {
 export default function NearestPeoplePage() {
   return (
     <main className="nearPage">
-      <nav className="nearNav">
-        <Link href="/" className="nearBrand">
-          <img src="/logo.png" alt="Human Safety" />
-          <span>Human <b>Safety</b></span>
-        </Link>
-
-        <div className="nearMenu">
-          <Link href="/" className="nearMenuItem">
-            <ShieldCheck size={22} /> Dashboard
-          </Link>
-          <span className="nearMenuItem">
-            <Bell size={22} /> Alerts
-          </span>
-          <div className="nearUser">U <span></span></div>
-        </div>
-      </nav>
+        <Sidebar />
+     
 
       <section className="nearHero">
         <div className="mainIcon">

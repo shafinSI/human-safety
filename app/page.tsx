@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Sidebar from "./components/sidebar";
 
 const features = [
   ["🚨", "Emergency Alert", "Send SOS alert with your live location instantly.", "/emergency-alert"],
@@ -11,6 +12,8 @@ const features = [
 export default function Home() {
   return (
     <main className="home">
+      <Sidebar />
+
       <nav className="navbar">
         <Link href="/" className="brand">
           <img
@@ -21,23 +24,10 @@ export default function Home() {
           <span>Human Safety</span>
         </Link>
 
-        <div className="navlinks">
-          <Link href="/">Home</Link>
-          <Link href="/emergency-alert">Emergency Alert</Link>
-          <Link href="/nearest-people">Nearest People</Link>
-          <Link href="/safety-travel">Safety Travel</Link>
-          <Link href="/guardian-mode">Guardian Mode</Link>
-          <Link href="/emergency-contact">Emergency Contact</Link>
-        </div>
-
+       
         <div className="authBtns">
-          <Link href="/register" className="helpBtn">
-            Register
-          </Link>
-
-          <Link href="/login" className="helpBtn loginTopBtn">
-            Login
-          </Link>
+          <Link href="/register" className="helpBtn">Register</Link>
+          <Link href="/login" className="helpBtn loginTopBtn">Login</Link>
         </div>
       </nav>
 
@@ -72,25 +62,10 @@ export default function Home() {
       </section>
 
       <section className="stats">
-        <div>
-          <b>10K+</b>
-          <span>Active Users</span>
-        </div>
-
-        <div>
-          <b>24/7</b>
-          <span>Emergency Support</span>
-        </div>
-
-        <div>
-          <b>100+</b>
-          <span>Cities Covered</span>
-        </div>
-
-        <div>
-          <b>99%</b>
-          <span>Safety Commitment</span>
-        </div>
+        <div><b>10K+</b><span>Active Users</span></div>
+        <div><b>24/7</b><span>Emergency Support</span></div>
+        <div><b>100+</b><span>Cities Covered</span></div>
+        <div><b>99%</b><span>Safety Commitment</span></div>
       </section>
 
       <section id="features" className="features">

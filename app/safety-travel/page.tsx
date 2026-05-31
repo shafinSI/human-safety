@@ -1,10 +1,11 @@
 "use client";
-
+import Sidebar from "../components/sidebar";
 import Link from "next/link";
 
 export default function SafetyTravel() {
   return (
     <main className="travelPage">
+        <Sidebar />
 
       <nav className="travelNavbar">
 
@@ -14,9 +15,7 @@ export default function SafetyTravel() {
         </Link>
 
         <div className="travelLinks">
-          <Link href="/">Home</Link>
-          <Link href="/emergency-alert">Alerts</Link>
-          <Link href="/safety-travel#travel-guides">Guides</Link>
+           <Link href="/safety-travel#travel-guides">Guides</Link>
         </div>
 
         <div className="travelUser">U</div>

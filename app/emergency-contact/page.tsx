@@ -1,5 +1,5 @@
 "use client";
-
+import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -58,6 +58,7 @@ export default function EmergencyContact() {
 
   return (
     <main className="contactPage">
+        <Sidebar />
 
       <nav className="contactNavbar">
 
@@ -65,18 +66,6 @@ export default function EmergencyContact() {
           <img src="/logo.png" alt="logo" />
           Human <span>Safety</span>
         </Link>
-
-        <div className="contactLinks">
-          <Link href="/">Dashboard</Link>
-          <Link href="/guardian-mode">Guardian Mode</Link>
-
-          <Link
-            href="/emergency-contact"
-            className="contactActive"
-          >
-            Emergency Contact
-          </Link>
-        </div>
 
         <div className="contactUser">U</div>
 
