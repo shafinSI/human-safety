@@ -8,14 +8,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "bcryptjs": "^3.0.3",
     "chromedriver": "^148.0.4",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.14.0",
     "next": "latest",
+    "prisma": "^7.8.0",
     "react": "latest",
     "react-dom": "latest",
-    "selenium-webdriver": "^4.44.0"
+    "selenium-webdriver": "^4.44.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "typescript": "6.0.3"
