@@ -1931,7 +1931,7 @@ body {
   }
 
   .authHomeText {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .loginHero {
@@ -1939,11 +1939,11 @@ body {
   }
 
   .loginLeft h1 {
-    font-size: 42px;
+    font-size: 40px;
   }
 
   .loginCard {
-    padding: 32px 24px;
+    padding: 28px 22px;
   }
 
   .loginShield {
@@ -1952,3 +1952,89 @@ body {
   }
 }
 
+.hamburgerBtn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  width: 55px;
+  height: 55px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.sidebarOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1001;
+}
+
+.sideDrawer {
+  position: fixed;
+  top: 0;
+  left: -285px;
+  width: 280px;
+  height: 100vh;
+  background: #020617;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  z-index: 1002;
+  padding: 24px 18px;
+  transition: 0.3s;
+}
+
+.sideDrawer.open {
+  left: 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  float: right;
+  cursor: pointer;
+}
+
+.sidebarBrand {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.sidebarBrand img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.sidebarMenu {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebarLink {
+  color: #dbeafe;
+  text-decoration: none;
+  padding: 14px 16px;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.sidebarLink:hover {
+  background: rgba(0, 230, 154, 0.12);
+  color: #00e69a;
+}
