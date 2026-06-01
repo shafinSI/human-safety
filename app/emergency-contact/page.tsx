@@ -1,4 +1,5 @@
 "use client";
+
 import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,7 +19,21 @@ export default function EmergencyContact() {
     const saved = localStorage.getItem("emergencyContacts");
 
     if (saved) {
-      setContacts(JSON.parse(saved));
+      try {
+        const parsed = JSON.parse(saved);
+
+        const validContacts = parsed.filter(
+          (contact: Contact) => contact && contact.name && contact.phone
+        );
+
+        setContacts(validContacts);
+        localStorage.setItem(
+          "emergencyContacts",
+          JSON.stringify(validContacts)
+        );
+      } catch {
+        localStorage.removeItem("emergencyContacts");
+      }
     }
   }, []);
 
@@ -28,15 +43,20 @@ export default function EmergencyContact() {
   }
 
   function handleSave() {
-    if (!name || !phone) return;
+    if (!name.trim() || !phone.trim()) return;
+
+    const newContact = {
+      name: name.trim(),
+      phone: phone.trim(),
+    };
 
     let updated = [...contacts];
 
     if (editIndex !== null) {
-      updated[editIndex] = { name, phone };
+      updated[editIndex] = newContact;
       setEditIndex(null);
     } else {
-      updated.push({ name, phone });
+      updated.push(newContact);
     }
 
     saveToStorage(updated);
@@ -51,41 +71,35 @@ export default function EmergencyContact() {
   }
 
   function handleEdit(index: number) {
-    setName(contacts[index].name);
-    setPhone(contacts[index].phone);
+    setName(contacts[index]?.name || "");
+    setPhone(contacts[index]?.phone || "");
     setEditIndex(index);
   }
 
   return (
     <main className="contactPage">
-        <Sidebar />
+      <Sidebar />
 
       <nav className="contactNavbar">
-
         <Link href="/" className="contactLogo">
           <img src="/logo.png" alt="logo" />
           Human <span>Safety</span>
         </Link>
 
         <div className="contactUser">U</div>
-
       </nav>
 
       <section className="contactHero">
-
         <div className="contactLeft">
-
           <h1>
             Emergency <span>Contact</span>
           </h1>
 
           <p>
-            Add trusted contacts who will be
-            notified in an emergency.
+            Add trusted contacts who will be notified in an emergency.
           </p>
 
           <div className="contactCard">
-
             <div className="inputBox">
               <span>👤</span>
 
@@ -108,19 +122,13 @@ export default function EmergencyContact() {
               />
             </div>
 
-            <button
-              className="saveBtn"
-              onClick={handleSave}
-            >
+            <button className="saveBtn" onClick={handleSave}>
               ➕ {editIndex !== null ? "Update Contact" : "Save Contact"}
             </button>
-
           </div>
-
         </div>
 
         <div className="contactRight">
-
           <img
             src="/emergency_contact.png"
             alt="contact"
@@ -131,46 +139,35 @@ export default function EmergencyContact() {
             <h3>🛡️ Stay Protected, Stay Connected</h3>
 
             <p>
-              Your trusted contacts will be alerted instantly
-              when you need help.
+              Your trusted contacts will be alerted instantly when you need
+              help.
             </p>
           </div>
-
         </div>
-
       </section>
 
       <section className="savedSection">
-
         <h2>Saved Contacts</h2>
 
         <div className="savedList">
-
           {contacts.length === 0 && (
-            <p className="emptyText">
-              No contacts saved yet.
-            </p>
+            <p className="emptyText">No contacts saved yet.</p>
           )}
 
           {contacts.map((contact, index) => (
-
             <div className="savedCard" key={index}>
-
               <div className="savedInfo">
-
                 <div className="savedAvatar">
-                  {contact.name.charAt(0)}
+                  {contact.name ? contact.name.charAt(0).toUpperCase() : "?"}
                 </div>
 
                 <div>
                   <h3>{contact.name}</h3>
                   <p>{contact.phone}</p>
                 </div>
-
               </div>
 
               <div className="savedBtns">
-
                 <button
                   className="editBtn"
                   onClick={() => handleEdit(index)}
@@ -184,21 +181,15 @@ export default function EmergencyContact() {
                 >
                   🗑️
                 </button>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       </section>
 
       <div className="contactBottom">
         🔒 Your contacts are stored securely and never shared with anyone.
       </div>
-
     </main>
   );
 }
