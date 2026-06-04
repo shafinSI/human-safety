@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -11,44 +12,5 @@ model User {
   name      String
   email     String   @unique
   password  String
-  phone     String?
   createdAt DateTime @default(now())
-
-  contacts  EmergencyContact[]
-  alerts    EmergencyAlert[]
-  guardians GuardianSession[]
-}
-
-model EmergencyContact {
-  id        Int      @id @default(autoincrement())
-  name      String
-  phone     String
-  email     String?
-  relation  String?
-  userId    Int
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model EmergencyAlert {
-  id        Int      @id @default(autoincrement())
-  message   String
-  location  String?
-  status    String   @default("PENDING")
-  userId    Int
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model GuardianSession {
-  id        Int      @id @default(autoincrement())
-  startTime DateTime @default(now())
-  endTime   DateTime?
-  status    String   @default("ACTIVE")
-  location  String?
-  userId    Int
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
