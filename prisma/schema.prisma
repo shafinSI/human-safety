@@ -16,6 +16,7 @@ model User {
   contacts EmergencyContact[]
   guardians Guardian[]
   alerts EmergencyAlert[]
+  travels SafetyTravel[]
 }
 model EmergencyContact {
   id        Int      @id @default(autoincrement())
@@ -45,6 +46,17 @@ model EmergencyAlert {
   status    String   @default("active")
   userId    Int
   createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+model SafetyTravel {
+  id            Int      @id @default(autoincrement())
+  startLocation String
+  endLocation   String
+  travelMode    String
+  status        String   @default("active")
+  userId        Int
+  createdAt     DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }
