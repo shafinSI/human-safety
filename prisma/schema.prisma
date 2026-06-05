@@ -13,4 +13,15 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  contacts EmergencyContact[]
+}
+model EmergencyContact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  relation  String
+  userId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
