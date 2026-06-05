@@ -43,15 +43,25 @@ export async function POST(req: Request) {
       }
     );
 
-    return NextResponse.json({
-      message: "Login successful",
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-    });
+ const response = NextResponse.json({
+  message: "Login successful",
+  token,
+  user: {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  },
+});
+
+response.cookies.set("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: 60 * 60 * 24 * 7,
+  path: "/",
+});
+
+return response;
 
   } catch (error) {
     console.error("Login Error:", error);
