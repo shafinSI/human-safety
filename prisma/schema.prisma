@@ -14,12 +14,35 @@ model User {
   password  String
   createdAt DateTime @default(now())
   contacts EmergencyContact[]
+  guardians Guardian[]
+  alerts EmergencyAlert[]
 }
 model EmergencyContact {
   id        Int      @id @default(autoincrement())
   name      String
   phone     String
   relation  String
+  userId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+model Guardian {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String
+  userId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+model EmergencyAlert {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  location  String?
+  status    String   @default("active")
   userId    Int
   createdAt DateTime @default(now())
 
