@@ -9,8 +9,9 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "axios": "^1.17.0",
     "bcryptjs": "^3.0.3",
-    "chromedriver": "^148.0.4",
+    "chromedriver": "^140.0.4",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.14.0",
     "next": "latest",
