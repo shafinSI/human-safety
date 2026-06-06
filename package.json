@@ -13,7 +13,7 @@
     "bcryptjs": "^3.0.3",
     "chromedriver": "^140.0.4",
     "jsonwebtoken": "^9.0.3",
-    "lucide-react": "^1.14.0",
+    "lucide-react": "^1.17.0",
     "next": "latest",
     "prisma": "^6.19.3",
     "react": "latest",

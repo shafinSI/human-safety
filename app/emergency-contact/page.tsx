@@ -44,17 +44,23 @@ export default function EmergencyContact() {
 
     if (res.ok && data.user) {
       setUser(data.user);
-      fetchContacts(data.user.id);
+      fetchContacts();
     } else {
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
   }
 
-  async function fetchContacts(userId: number) {
-    const res = await fetch(`/api/emergency-contact?userId=${userId}`);
-    const data = await res.json();
+  async function fetchContacts() {
+    const token = localStorage.getItem("token");
 
+    const res = await fetch("/api/emergency-contact", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
     setContacts(data.contacts || []);
   }
 
@@ -63,7 +69,9 @@ export default function EmergencyContact() {
   }, []);
 
   async function handleSave() {
-    if (!user) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       alert("Please login first");
       return;
     }
@@ -86,13 +94,13 @@ export default function EmergencyContact() {
           name,
           phone,
           relation,
-          userId: user.id,
         };
 
     const res = await fetch("/api/emergency-contact", {
       method,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -107,26 +115,27 @@ export default function EmergencyContact() {
       setRelation("");
       setEditId(null);
 
-      fetchContacts(user.id);
+      fetchContacts();
     } else {
       alert(data.error || "Something went wrong");
     }
   }
 
   async function handleDelete(id: number) {
-    if (!user) return;
+    const token = localStorage.getItem("token");
 
     const res = await fetch("/api/emergency-contact", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ id }),
     });
 
     if (res.ok) {
       alert("Contact deleted");
-      fetchContacts(user.id);
+      fetchContacts();
     }
   }
 
@@ -163,7 +172,6 @@ export default function EmergencyContact() {
           <div className="contactCard">
             <div className="inputBox">
               <span>👤</span>
-
               <input
                 type="text"
                 placeholder="Enter name"
@@ -174,7 +182,6 @@ export default function EmergencyContact() {
 
             <div className="inputBox">
               <span>📞</span>
-
               <input
                 type="text"
                 placeholder="Enter phone number"
@@ -185,7 +192,6 @@ export default function EmergencyContact() {
 
             <div className="inputBox">
               <span>👥</span>
-
               <input
                 type="text"
                 placeholder="Enter relation"
@@ -209,7 +215,6 @@ export default function EmergencyContact() {
 
           <div className="contactFloating">
             <h3>🛡️ Stay Protected, Stay Connected</h3>
-
             <p>
               Your trusted contacts will be alerted instantly when you need
               help.
