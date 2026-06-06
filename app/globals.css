@@ -2038,3 +2038,61 @@ body {
   background: rgba(0, 230, 154, 0.12);
   color: #00e69a;
 }
+.guardianLocationBox {
+  margin-top: 25px;
+  padding: 22px;
+  max-width: 520px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.12);
+}
+
+.guardianLocationBox p {
+  margin: 8px 0;
+  font-size: 18px;
+  color: #e5f7ff;
+}
+
+.guardianShareBtns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.guardianShareBtns a {
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #10b981, #22c55e);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.guardianShareBtns a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+}
+.trustedContactBox {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.trustedContactBox h3 {
+  margin-bottom: 10px;
+}
+
+.trustedContactBox input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}

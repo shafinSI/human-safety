@@ -1,14 +1,68 @@
 "use client";
+
 import Sidebar from "../components/sidebar";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function GuardianMode() {
   const [guardianOn, setGuardianOn] = useState(false);
+  const [watchId, setWatchId] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [trustedName, setTrustedName] = useState("");
+  const [trustedPhone, setTrustedPhone] = useState("");
+  const startGuardianMode = () => {
+    if (!navigator.geolocation) {
+      alert("Location is not supported in this browser");
+      return;
+    }
+
+    const id = navigator.geolocation.watchPosition(
+      (pos) => {
+        const liveLocation = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+
+        console.log("Live Location:", liveLocation);
+        setLocation(liveLocation);
+        setGuardianOn(true);
+      },
+      (err) => {
+        console.log("Location Error:", err);
+        alert("Location error: " + err.message);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000,
+      }
+    );
+
+    setWatchId(id);
+  };
+
+  const stopGuardianMode = () => {
+    if (watchId) {
+      navigator.geolocation.clearWatch(watchId);
+    }
+
+    setGuardianOn(false);
+    setWatchId(null);
+    setLocation(null);
+  };
+
+  const mapLink = location
+    ? `https://www.google.com/maps?q=${location.lat},${location.lng}`
+    : "";
+
+  const shareMessage = location
+    ? `Guardian Mode ON. My live location: ${mapLink}`
+    : "";
 
   return (
     <main className="guardianPage">
-        <Sidebar />
+      <Sidebar />
+
       <nav className="guardianNavbar">
         <Link href="/" className="guardianLogo">
           <img src="/logo.png" alt="logo" />
@@ -39,7 +93,7 @@ export default function GuardianMode() {
 
           <button
             className="guardianBtn"
-            onClick={() => setGuardianOn(!guardianOn)}
+            onClick={guardianOn ? stopGuardianMode : startGuardianMode}
           >
             🛡️ {guardianOn ? "Stop Guardian Mode" : "Start Guardian Mode"}
           </button>
@@ -48,6 +102,51 @@ export default function GuardianMode() {
             <div className={guardianOn ? "toggleSwitch on" : "toggleSwitch"} />
             Guardian Mode {guardianOn ? "ON" : "OFF"}
           </div>
+          <div className="trustedContactBox">
+  <h3>👥 Trusted Contact</h3>
+
+  <input
+    type="text"
+    placeholder="Contact Name"
+    value={trustedName}
+    onChange={(e) => setTrustedName(e.target.value)}
+  />
+
+  <input
+    type="text"
+    placeholder="Phone Number"
+    value={trustedPhone}
+    onChange={(e) => setTrustedPhone(e.target.value)}
+  />
+</div>
+
+          {location && (
+            <div className="guardianLocationBox">
+              <p>Latitude: {location.lat}</p>
+              <p>Longitude: {location.lng}</p>
+
+              <div className="guardianShareBtns">
+                <a href={mapLink} target="_blank">
+                  🗺️ Google Maps
+                </a>
+
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(
+                    shareMessage
+                  )}`}
+                  target="_blank"
+                >
+                  🟢 WhatsApp
+                </a>
+
+              <a
+  href={`sms:${trustedPhone}?body=${encodeURIComponent(shareMessage)}`}
+>
+  💬 SMS to {trustedName || "Contact"}
+</a>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="guardianRight">
