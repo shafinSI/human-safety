@@ -5,75 +5,136 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Contact {
+  id: number;
   name: string;
   phone: string;
+  relation: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
 }
 
 export default function EmergencyContact() {
+  const [user, setUser] = useState<User | null>(null);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [relation, setRelation] = useState("");
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [editId, setEditId] = useState<number | null>(null);
+
+  async function fetchCurrentUser() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    const res = await fetch("/api/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.user) {
+      setUser(data.user);
+      fetchContacts(data.user.id);
+    } else {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+  }
+
+  async function fetchContacts(userId: number) {
+    const res = await fetch(`/api/emergency-contact?userId=${userId}`);
+    const data = await res.json();
+
+    setContacts(data.contacts || []);
+  }
 
   useEffect(() => {
-    const saved = localStorage.getItem("emergencyContacts");
-
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-
-        const validContacts = parsed.filter(
-          (contact: Contact) => contact && contact.name && contact.phone
-        );
-
-        setContacts(validContacts);
-        localStorage.setItem(
-          "emergencyContacts",
-          JSON.stringify(validContacts)
-        );
-      } catch {
-        localStorage.removeItem("emergencyContacts");
-      }
-    }
+    fetchCurrentUser();
   }, []);
 
-  function saveToStorage(updated: Contact[]) {
-    setContacts(updated);
-    localStorage.setItem("emergencyContacts", JSON.stringify(updated));
-  }
-
-  function handleSave() {
-    if (!name.trim() || !phone.trim()) return;
-
-    const newContact = {
-      name: name.trim(),
-      phone: phone.trim(),
-    };
-
-    let updated = [...contacts];
-
-    if (editIndex !== null) {
-      updated[editIndex] = newContact;
-      setEditIndex(null);
-    } else {
-      updated.push(newContact);
+  async function handleSave() {
+    if (!user) {
+      alert("Please login first");
+      return;
     }
 
-    saveToStorage(updated);
+    if (!name.trim() || !phone.trim() || !relation.trim()) {
+      alert("All fields are required");
+      return;
+    }
 
-    setName("");
-    setPhone("");
+    const method = editId ? "PUT" : "POST";
+
+    const body = editId
+      ? {
+          id: editId,
+          name,
+          phone,
+          relation,
+        }
+      : {
+          name,
+          phone,
+          relation,
+          userId: user.id,
+        };
+
+    const res = await fetch("/api/emergency-contact", {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(editId ? "Contact updated" : "Contact added");
+
+      setName("");
+      setPhone("");
+      setRelation("");
+      setEditId(null);
+
+      fetchContacts(user.id);
+    } else {
+      alert(data.error || "Something went wrong");
+    }
   }
 
-  function handleDelete(index: number) {
-    const updated = contacts.filter((_, i) => i !== index);
-    saveToStorage(updated);
+  async function handleDelete(id: number) {
+    if (!user) return;
+
+    const res = await fetch("/api/emergency-contact", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (res.ok) {
+      alert("Contact deleted");
+      fetchContacts(user.id);
+    }
   }
 
-  function handleEdit(index: number) {
-    setName(contacts[index]?.name || "");
-    setPhone(contacts[index]?.phone || "");
-    setEditIndex(index);
+  function handleEdit(contact: Contact) {
+    setEditId(contact.id);
+    setName(contact.name);
+    setPhone(contact.phone);
+    setRelation(contact.relation);
   }
 
   return (
@@ -86,7 +147,9 @@ export default function EmergencyContact() {
           Human <span>Safety</span>
         </Link>
 
-        <div className="contactUser">U</div>
+        <div className="contactUser">
+          {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+        </div>
       </nav>
 
       <section className="contactHero">
@@ -95,9 +158,7 @@ export default function EmergencyContact() {
             Emergency <span>Contact</span>
           </h1>
 
-          <p>
-            Add trusted contacts who will be notified in an emergency.
-          </p>
+          <p>Add trusted contacts who will be notified in an emergency.</p>
 
           <div className="contactCard">
             <div className="inputBox">
@@ -122,8 +183,19 @@ export default function EmergencyContact() {
               />
             </div>
 
+            <div className="inputBox">
+              <span>👥</span>
+
+              <input
+                type="text"
+                placeholder="Enter relation"
+                value={relation}
+                onChange={(e) => setRelation(e.target.value)}
+              />
+            </div>
+
             <button className="saveBtn" onClick={handleSave}>
-              ➕ {editIndex !== null ? "Update Contact" : "Save Contact"}
+              ➕ {editId ? "Update Contact" : "Save Contact"}
             </button>
           </div>
         </div>
@@ -154,8 +226,8 @@ export default function EmergencyContact() {
             <p className="emptyText">No contacts saved yet.</p>
           )}
 
-          {contacts.map((contact, index) => (
-            <div className="savedCard" key={index}>
+          {contacts.map((contact) => (
+            <div className="savedCard" key={contact.id}>
               <div className="savedInfo">
                 <div className="savedAvatar">
                   {contact.name ? contact.name.charAt(0).toUpperCase() : "?"}
@@ -164,20 +236,18 @@ export default function EmergencyContact() {
                 <div>
                   <h3>{contact.name}</h3>
                   <p>{contact.phone}</p>
+                  <p>{contact.relation}</p>
                 </div>
               </div>
 
               <div className="savedBtns">
-                <button
-                  className="editBtn"
-                  onClick={() => handleEdit(index)}
-                >
+                <button className="editBtn" onClick={() => handleEdit(contact)}>
                   ✏️
                 </button>
 
                 <button
                   className="deleteBtn"
-                  onClick={() => handleDelete(index)}
+                  onClick={() => handleDelete(contact.id)}
                 >
                   🗑️
                 </button>

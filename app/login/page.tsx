@@ -22,12 +22,12 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-     if (res.ok) {
-            localStorage.setItem("token", data.token);
-                   window.location.href = "/";
-            } else {
-                alert(data.error || "Login failed");
-             } 
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        window.location.href = "/dashboard";
+      } else {
+        alert(data.error || "Login failed");
+      }
     } catch (error) {
       console.error("Login error:", error);
       alert("Something went wrong");

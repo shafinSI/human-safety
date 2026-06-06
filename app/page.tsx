@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/sidebar";
 
 const features = [
@@ -10,6 +13,22 @@ const features = [
 ];
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
     <main className="home">
       <Sidebar />
@@ -24,10 +43,35 @@ export default function Home() {
           <span>Human Safety</span>
         </Link>
 
-       
         <div className="authBtns">
-          <Link href="/register" className="helpBtn">Register</Link>
-          <Link href="/login" className="helpBtn loginTopBtn">Login</Link>
+          {isLoggedIn ? (
+            <>
+              <Link href="/dashboard" className="helpBtn">
+                Dashboard
+              </Link>
+
+              <Link href="/profile" className="helpBtn">
+                Profile
+              </Link>
+
+              <Link href="/change-password" className="helpBtn">
+                Change Password
+              </Link>
+
+              <button onClick={handleLogout} className="helpBtn loginTopBtn">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/register" className="helpBtn">
+                Register
+              </Link>
+              <Link href="/login" className="helpBtn loginTopBtn">
+                Login
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -46,7 +90,10 @@ export default function Home() {
           </p>
 
           <div className="heroBtns">
-            <Link href="/register" className="primary">
+            <Link
+              href={isLoggedIn ? "/emergency-alert" : "/register"}
+              className="primary"
+            >
               Get Help Now 🚨
             </Link>
 
