@@ -2,10 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Phone, Shield, TriangleAlert, MapPinned } from "lucide-react";
+import {
+  Phone,
+  Shield,
+  TriangleAlert,
+  MapPinned,
+  History,
+  Route,
+} from "lucide-react";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null);
+  const [recent, setRecent] = useState<any>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,6 +27,7 @@ export default function DashboardPage() {
       .then((data) => {
         if (data.stats) {
           setStats(data.stats);
+          setRecent(data.recent);
         }
       })
       .catch((err) => {
@@ -50,11 +59,15 @@ export default function DashboardPage() {
         </Link>
 
         <Link href="/guardian-mode" style={buttonStyle}>
-          Add Guardian
+          Guardian Mode
         </Link>
 
-        <Link href="/emergency-alert" style={buttonStyle}>
-          Send Alert
+        <Link href="/alert-history" style={buttonStyle}>
+          Alert History
+        </Link>
+
+        <Link href="/route-history" style={buttonStyle}>
+          Route History
         </Link>
       </div>
 
@@ -83,6 +96,22 @@ export default function DashboardPage() {
           </div>
         </Link>
 
+        <Link href="/alert-history" style={linkStyle}>
+          <div style={cardStyle}>
+            <History size={32} color="#ff4d4d" />
+            <h2>{stats.guardianAlerts || 0}</h2>
+            <p>Guardian SOS Alerts</p>
+          </div>
+        </Link>
+
+        <Link href="/route-history" style={linkStyle}>
+          <div style={cardStyle}>
+            <Route size={32} color="#00f5ff" />
+            <h2>{stats.safetyRoutes || 0}</h2>
+            <p>Route Analysis</p>
+          </div>
+        </Link>
+
         <div style={cardStyle}>
           <MapPinned size={32} color="#00f5ff" />
           <h2>{stats.travels}</h2>
@@ -92,7 +121,43 @@ export default function DashboardPage() {
 
       <div style={sectionStyle}>
         <h2>Recent Activity</h2>
-        <p>No recent activity yet.</p>
+
+        {recent?.latestGuardianAlert ? (
+          <div style={activityBoxStyle}>
+            <h3 style={dangerTitleStyle}>🚨 Latest SOS Alert</h3>
+            <p>
+              <b>Name:</b> {recent.latestGuardianAlert.name}
+            </p>
+            <p>
+              <b>Phone:</b> {recent.latestGuardianAlert.phone}
+            </p>
+            <Link href="/alert-history" style={smallLinkStyle}>
+              View Alert History →
+            </Link>
+          </div>
+        ) : (
+          <p>No SOS alerts found.</p>
+        )}
+
+        {recent?.latestRoute ? (
+          <div style={activityBoxStyle}>
+            <h3 style={routeTitleStyle}>🛣️ Latest Route</h3>
+            <p>
+              <b>From:</b> {recent.latestRoute.startPoint}
+            </p>
+            <p>
+              <b>To:</b> {recent.latestRoute.destination}
+            </p>
+            <p>
+              <b>Risk:</b> {recent.latestRoute.riskLevel}
+            </p>
+            <Link href="/route-history" style={smallLinkStyle}>
+              View Route History →
+            </Link>
+          </div>
+        ) : (
+          <p>No route history found.</p>
+        )}
       </div>
     </main>
   );
@@ -142,7 +207,7 @@ const gridStyle: React.CSSProperties = {
   gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
   gap: "20px",
   marginTop: "30px",
-  maxWidth: "900px",
+  maxWidth: "1100px",
 };
 
 const linkStyle: React.CSSProperties = {
@@ -166,5 +231,29 @@ const sectionStyle: React.CSSProperties = {
   borderRadius: "14px",
   background: "#0b1224",
   border: "1px solid #1f2a44",
-  maxWidth: "900px",
+  maxWidth: "1100px",
+};
+
+const activityBoxStyle: React.CSSProperties = {
+  marginTop: "18px",
+  padding: "18px",
+  borderRadius: "12px",
+  background: "#050b1a",
+  border: "1px solid #1f2a44",
+};
+
+const dangerTitleStyle: React.CSSProperties = {
+  color: "#ff4d4d",
+};
+
+const routeTitleStyle: React.CSSProperties = {
+  color: "#00f5ff",
+};
+
+const smallLinkStyle: React.CSSProperties = {
+  display: "inline-block",
+  marginTop: "8px",
+  color: "#00f5ff",
+  textDecoration: "none",
+  fontWeight: "bold",
 };

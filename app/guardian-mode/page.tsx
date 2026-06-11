@@ -2,7 +2,7 @@
 
 import Sidebar from "../components/sidebar";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function GuardianMode() {
   const [guardianOn, setGuardianOn] = useState(false);
@@ -10,6 +10,17 @@ export default function GuardianMode() {
   const [location, setLocation] = useState(null);
   const [trustedName, setTrustedName] = useState("");
   const [trustedPhone, setTrustedPhone] = useState("");
+
+  useEffect(() => {
+    const savedContact = localStorage.getItem("trustedContact");
+
+    if (savedContact) {
+      const contact = JSON.parse(savedContact);
+      setTrustedName(contact.name || "");
+      setTrustedPhone(contact.phone || "");
+    }
+  }, []);
+
   const startGuardianMode = () => {
     if (!navigator.geolocation) {
       alert("Location is not supported in this browser");
@@ -49,6 +60,78 @@ export default function GuardianMode() {
     setGuardianOn(false);
     setWatchId(null);
     setLocation(null);
+  };
+
+  const saveContact = () => {
+    if (!trustedName || !trustedPhone) {
+      alert("Please enter contact name and phone number");
+      return;
+    }
+
+    localStorage.setItem(
+      "trustedContact",
+      JSON.stringify({
+        name: trustedName,
+        phone: trustedPhone,
+      })
+    );
+
+    alert("Contact Saved Successfully");
+  };
+
+  const sendSOSAlert = async () => {
+    if (!location) {
+      alert("Please start Guardian Mode first");
+      return;
+    }
+
+    if (!trustedName || !trustedPhone) {
+      alert("Please enter and save trusted contact first");
+      return;
+    }
+
+    const sosMapLink = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
+
+    const emergencyMessage = `🚨 EMERGENCY ALERT 🚨
+I need help.
+
+Trusted Contact:
+Name: ${trustedName}
+Phone: ${trustedPhone}
+
+My current location:
+${sosMapLink}`;
+
+    try {
+      const res = await fetch("/api/guardian-alert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: trustedName,
+          phone: trustedPhone,
+          latitude: location.lat,
+          longitude: location.lng,
+          mapLink: sosMapLink,
+        }),
+      });
+
+      if (!res.ok) {
+        alert("SOS alert database save failed");
+        return;
+      }
+
+      alert("SOS Alert Saved Successfully");
+
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(emergencyMessage)}`,
+        "_blank"
+      );
+    } catch (error) {
+      console.error("SOS Error:", error);
+      alert("Failed to send SOS alert");
+    }
   };
 
   const mapLink = location
@@ -98,27 +181,36 @@ export default function GuardianMode() {
             🛡️ {guardianOn ? "Stop Guardian Mode" : "Start Guardian Mode"}
           </button>
 
+          <button className="sosBtn" onClick={sendSOSAlert}>
+            🚨 SOS Emergency Alert
+          </button>
+
           <div className="guardianToggle">
             <div className={guardianOn ? "toggleSwitch on" : "toggleSwitch"} />
             Guardian Mode {guardianOn ? "ON" : "OFF"}
           </div>
+
           <div className="trustedContactBox">
-  <h3>👥 Trusted Contact</h3>
+            <h3>👥 Trusted Contact</h3>
 
-  <input
-    type="text"
-    placeholder="Contact Name"
-    value={trustedName}
-    onChange={(e) => setTrustedName(e.target.value)}
-  />
+            <input
+              type="text"
+              placeholder="Contact Name"
+              value={trustedName}
+              onChange={(e) => setTrustedName(e.target.value)}
+            />
 
-  <input
-    type="text"
-    placeholder="Phone Number"
-    value={trustedPhone}
-    onChange={(e) => setTrustedPhone(e.target.value)}
-  />
-</div>
+            <input
+              type="text"
+              placeholder="Phone Number"
+              value={trustedPhone}
+              onChange={(e) => setTrustedPhone(e.target.value)}
+            />
+
+            <button className="saveContactBtn" onClick={saveContact}>
+              💾 Save Contact
+            </button>
+          </div>
 
           {location && (
             <div className="guardianLocationBox">
@@ -139,11 +231,13 @@ export default function GuardianMode() {
                   🟢 WhatsApp
                 </a>
 
-              <a
-  href={`sms:${trustedPhone}?body=${encodeURIComponent(shareMessage)}`}
->
-  💬 SMS to {trustedName || "Contact"}
-</a>
+                <a
+                  href={`sms:${trustedPhone}?body=${encodeURIComponent(
+                    shareMessage
+                  )}`}
+                >
+                  💬 SMS to {trustedName || "Contact"}
+                </a>
               </div>
             </div>
           )}

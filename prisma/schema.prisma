@@ -13,11 +13,13 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
   contacts EmergencyContact[]
   guardians Guardian[]
-  alerts EmergencyAlert[]
-  travels SafetyTravel[]
+  alerts    EmergencyAlert[]
+  travels   SafetyTravel[]
 }
+
 model EmergencyContact {
   id        Int      @id @default(autoincrement())
   name      String
@@ -28,6 +30,7 @@ model EmergencyContact {
 
   user User @relation(fields: [userId], references: [id])
 }
+
 model Guardian {
   id        Int      @id @default(autoincrement())
   name      String
@@ -38,6 +41,7 @@ model Guardian {
 
   user User @relation(fields: [userId], references: [id])
 }
+
 model EmergencyAlert {
   id        Int      @id @default(autoincrement())
   title     String
@@ -49,6 +53,7 @@ model EmergencyAlert {
 
   user User @relation(fields: [userId], references: [id])
 }
+
 model SafetyTravel {
   id            Int      @id @default(autoincrement())
   startLocation String
@@ -59,4 +64,32 @@ model SafetyTravel {
   createdAt     DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model GuardianAlert {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  latitude  Float
+  longitude Float
+  mapLink   String
+  createdAt DateTime @default(now())
+}
+
+model SafetyRouteCheck {
+  id          Int      @id @default(autoincrement())
+  startPoint  String
+  destination String
+  score       Int
+  riskLevel   String
+  mapLink     String
+  createdAt   DateTime @default(now())
+}
+
+model NearbyAlert {
+  id        Int      @id @default(autoincrement())
+  latitude  Float
+  longitude Float
+  message   String
+  createdAt DateTime @default(now())
 }

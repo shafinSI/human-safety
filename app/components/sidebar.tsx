@@ -9,6 +9,7 @@ const menuItems = [
   ["📍", "Nearest People", "/nearest-people"],
   ["🛣️", "Safety Travel", "/safety-travel"],
   ["🛡️", "Guardian Mode", "/guardian-mode"],
+  ["📜", "Alert History", "/alert-history"],
   ["☎️", "Emergency Contact", "/emergency-contact"],
 ];
 

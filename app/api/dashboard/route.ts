@@ -12,18 +12,12 @@ export async function GET(req: Request) {
     const authHeader = req.headers.get("authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    ) as JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
     const contacts = await prisma.emergencyContact.count({
       where: { userId: decoded.id },
@@ -41,12 +35,34 @@ export async function GET(req: Request) {
       where: { userId: decoded.id },
     });
 
+    const guardianAlerts = await prisma.guardianAlert.count();
+
+    const safetyRoutes = await prisma.safetyRouteCheck.count();
+
+    const latestGuardianAlert = await prisma.guardianAlert.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const latestRoute = await prisma.safetyRouteCheck.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
     return NextResponse.json({
       stats: {
         contacts,
         guardians,
         alerts,
         travels,
+        guardianAlerts,
+        safetyRoutes,
+      },
+      recent: {
+        latestGuardianAlert,
+        latestRoute,
       },
     });
   } catch (error: any) {
