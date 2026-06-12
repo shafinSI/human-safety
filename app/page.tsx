@@ -14,6 +14,15 @@ const features = [
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState([
+    {
+      role: "ai",
+      text: "Hi! I am your Human Safety AI assistant. Ask me about emergency help, safe travel, or Guardian Mode.",
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,47 +38,72 @@ export default function Home() {
     window.location.href = "/login";
   };
 
+  const sendMessage = async () => {
+    if (!message.trim()) return;
+
+    const userMessage = message;
+    setMessage("");
+
+    setChat((prev) => [...prev, { role: "user", text: userMessage }]);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage,
+        }),
+      });
+
+      const data = await res.json();
+
+      setChat((prev) => [
+        ...prev,
+        {
+          role: "ai",
+          text: data.reply || "Sorry, I could not answer right now.",
+        },
+      ]);
+    } catch (error) {
+      setChat((prev) => [
+        ...prev,
+        {
+          role: "ai",
+          text: "AI service failed. Please try again later.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="home">
       <Sidebar />
 
       <nav className="navbar">
         <Link href="/" className="brand">
-          <img
-            src="/logo.png"
-            alt="Human Safety Logo"
-            className="brandLogo"
-          />
+          <img src="/logo.png" alt="Human Safety Logo" className="brandLogo" />
           <span>Human Safety</span>
         </Link>
 
         <div className="authBtns">
           {isLoggedIn ? (
             <>
-              <Link href="/dashboard" className="helpBtn">
-                Dashboard
-              </Link>
-
-              <Link href="/profile" className="helpBtn">
-                Profile
-              </Link>
-
-              <Link href="/change-password" className="helpBtn">
-                Change Password
-              </Link>
-
+              <Link href="/dashboard" className="helpBtn">Dashboard</Link>
+              <Link href="/profile" className="helpBtn">Profile</Link>
+              <Link href="/change-password" className="helpBtn">Change Password</Link>
               <button onClick={handleLogout} className="helpBtn loginTopBtn">
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link href="/register" className="helpBtn">
-                Register
-              </Link>
-              <Link href="/login" className="helpBtn loginTopBtn">
-                Login
-              </Link>
+              <Link href="/register" className="helpBtn">Register</Link>
+              <Link href="/login" className="helpBtn loginTopBtn">Login</Link>
             </>
           )}
         </div>
@@ -90,10 +124,7 @@ export default function Home() {
           </p>
 
           <div className="heroBtns">
-            <Link
-              href={isLoggedIn ? "/emergency-alert" : "/register"}
-              className="primary"
-            >
+            <Link href={isLoggedIn ? "/emergency-alert" : "/register"} className="primary">
               Get Help Now 🚨
             </Link>
 
@@ -140,6 +171,46 @@ export default function Home() {
           <p>Be aware. Be prepared. Be safe.</p>
         </div>
       </section>
+
+      <button className="aiChatButton" onClick={() => setChatOpen(!chatOpen)}>
+        💬 AI Help
+      </button>
+
+      {chatOpen && (
+        <div className="aiChatBox">
+          <div className="aiChatHeader">
+            <span>🤖 Human Safety AI</span>
+            <button onClick={() => setChatOpen(false)}>✕</button>
+          </div>
+
+          <div className="aiChatMessages">
+            {chat.map((item, index) => (
+              <div
+                key={index}
+                className={item.role === "user" ? "userMsg" : "aiMsg"}
+              >
+                {item.text}
+              </div>
+            ))}
+
+            {loading && <div className="aiMsg">Thinking...</div>}
+          </div>
+
+          <div className="aiChatInput">
+            <input
+              type="text"
+              placeholder="Ask about safety..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
+              }}
+            />
+
+            <button onClick={sendMessage}>Send</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
